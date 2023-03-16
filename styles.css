@@ -4,6 +4,7 @@ body {
     display: grid;
     grid-template: 1fr auto 1fr / 1fr auto 1fr;
     height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 #container {
@@ -17,6 +18,12 @@ body {
     gap: 4px;
 }
 
-.tile {
+.tile-container{
     background-color: white;
+    font-size: 8rem;
+    font-weight: 700;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
