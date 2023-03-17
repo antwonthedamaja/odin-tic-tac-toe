@@ -1,10 +1,10 @@
 const tiles = document.querySelectorAll('.tile');
 
 const gameBoard = {
-    board: ['x', 'x', 'o',
-            'o', 'x', 'x',
-            'x', 'x', 'x'],
-    renderBoard: function() {
+    board: ['', '', '',
+            '', '', '',
+            '', '', ''],
+    updateBoard: function() {
         tiles.forEach((tile, index) => {
             tile.innerText = this.board[index];
           });
@@ -25,17 +25,19 @@ const game = {
         [0, 4, 8],
         [2, 4, 6]
     ],
-    checkGame: function() {
+    checkForWin: function() {
         for (let i = 0; i < this.winConditions.length; i++) {
             let arr = this.winConditions[i];
             if (gameBoard.board[arr[0]] === gameBoard.board[arr[1]]
                 && gameBoard.board[arr[0]] === gameBoard.board[arr[2]]
                 && gameBoard.board[arr[0]] != '') console.log('win!');
         }
-    },
+    }
 };
 
+const displayController = {
 
+}
 
 function Player(name, color) {
     this.name = name;
@@ -43,5 +45,8 @@ function Player(name, color) {
     this.score = 0;
 }
 
-gameBoard.renderBoard();
-game.checkGame();
+//modal
+const openModal = document.querySelector('#open-modal');
+const modal = document.querySelector('#modal');
+
+openModal.addEventListener('click', () => modal.showModal());
