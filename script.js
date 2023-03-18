@@ -1,4 +1,7 @@
 const tiles = document.querySelectorAll('.tile');
+const p1name = document.querySelector('#p1name');
+const p2name = document.querySelector('#p2name');
+const play = document.querySelector('#submit');
 
 const boardController = {
     board: ['', '', '',
@@ -32,6 +35,16 @@ const game = {
                 && boardController.board[arr[0]] === boardController.board[arr[2]]
                 && boardController.board[arr[0]] != '') console.log('win!');
         }
+    },
+    initialize: function() {
+        boardController.board = ['', '', '',
+                                 '', '', '',
+                                 '', '', ''];
+        boardController.updateBoard();
+        player1.score = 0;
+        player2.score = 0;
+        player1.name = p1name.value;
+        player2.name = p2name.value;
     }
 };
 
@@ -44,6 +57,9 @@ function Player(name, color) {
     this.color = color;
     this.score = 0;
 }
+
+const player1 = new Player;
+const player2 = new Player;
 
 //modal
 const openModal = document.querySelector('#open-modal');
