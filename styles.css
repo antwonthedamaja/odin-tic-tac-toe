@@ -65,14 +65,14 @@ body {
 #open-modal {
     width: 50%;
     height: 25%;
-    border-radius: 20px;
+    border-radius: 15px;
     background-color: rgb(0, 255, 0);
     font-weight: 700;
     font-size: 2rem;
 }
 
 #modal {
-    width: 33%;
+    width: 25%;
     height: 50%;
 }
 
@@ -80,15 +80,52 @@ body {
     height: 100%;
     width: auto;
     display: grid;
-    grid-template: 1fr / 1fr 1fr;
+    grid-template: 1fr 1fr 1fr 1fr 1fr 1fr 1fr / 1fr;
+    font-weight: 700;
 }
 
-#modal-container > div:first-child {
-    height: 100%;
-    width: 100%;
+#modal-container input {
+    border: 1px solid rgb(193, 187, 187);
+    border-radius: 3px;
 }
 
-#modal-container > div:last-child {
-    height: 100%;
-    width: 100%;
+#modal-container > h2 {
+    place-self: center;
+}
+
+#modal-container > div:nth-child(-n+7) {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+ }
+
+#modal-container > div:nth-child(2) {
+    grid-area: 2 / 1 / 3 / 2;
+}
+
+#modal-container > div:nth-child(3) {
+    grid-area: 3 / 1 / 4 / 2;
+}
+
+#modal-container > div:nth-child(4) {
+    grid-area: 4 / 1 / 5 / 2;
+}
+
+#ai-control {
+    font-weight: initial;
+}
+
+#modal-container > div:nth-child(7) {
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+}
+
+#submit {
+    height: 50%;
+}
+
+#close-modal {
+    height: 50%;
 }

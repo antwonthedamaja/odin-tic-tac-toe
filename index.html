@@ -28,14 +28,38 @@
         <div id="player2-name" class="player-name-container">Player 2</div>
     </div>
     <div id="button-container">
-        <button id="open-modal">Ready?</button>
+        <button type="button" id="open-modal">Ready?</button>
         <dialog id="modal">
             <div id="modal-container">
+                <h2>Player Select</h2>
                 <div>
-                    
+                    <label for="p1name">Player 1 name:</label>
+                    <input type="text" name="p1name" id="p1name">
                 </div>
                 <div>
-                    
+                    <label for="p1color">Player 1 color:</label>
+                    <input type="range" min="0" max="360" value="180" id="p1color">
+                </div>
+                <div>
+                    <span>Player 2 select:</span>
+                    <div id="ai-control">
+                        <label for="p2ai">AI</label>
+                        <input type="radio" name="p2selection" id="p2ai" checked>
+                        <label for="p2human">Human</label>
+                        <input type="radio" name="p2selection" id="p2human">
+                    </div>
+                </div>
+                <div>
+                    <label for="p2name">Player 2 name:</label>
+                    <input type="text" name="p2name" id="p2name" disabled>
+                </div>
+                <div>
+                    <label for="p2color">Player 2 color:</label>
+                    <input type="range" min="0" max="360" value="180" id="p2color" disabled>
+                </div>
+                <div>
+                    <button type="button" id="submit">Play</button>
+                    <button type="button" id="close-modal">Close</button>
                 </div>
             </div>
         </dialog>

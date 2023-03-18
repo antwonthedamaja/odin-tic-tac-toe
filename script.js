@@ -1,6 +1,6 @@
 const tiles = document.querySelectorAll('.tile');
 
-const gameBoard = {
+const boardController = {
     board: ['', '', '',
             '', '', '',
             '', '', ''],
@@ -16,7 +16,7 @@ const gameBoard = {
 
 const game = {
     winConditions: [
-        [0, 1, 2],
+        [0, 1, 2], 
         [3, 4, 5],
         [6, 7, 8],
         [0, 3, 6],
@@ -27,10 +27,10 @@ const game = {
     ],
     checkForWin: function() {
         for (let i = 0; i < this.winConditions.length; i++) {
-            let arr = this.winConditions[i];
-            if (gameBoard.board[arr[0]] === gameBoard.board[arr[1]]
-                && gameBoard.board[arr[0]] === gameBoard.board[arr[2]]
-                && gameBoard.board[arr[0]] != '') console.log('win!');
+            let arr = this.winConditions[i]; //arr = [0, 1, 2]
+            if (boardController.board[arr[0]] === boardController.board[arr[1]]
+                && boardController.board[arr[0]] === boardController.board[arr[2]]
+                && boardController.board[arr[0]] != '') console.log('win!');
         }
     }
 };
@@ -47,6 +47,8 @@ function Player(name, color) {
 
 //modal
 const openModal = document.querySelector('#open-modal');
+const closeModal = document.querySelector('#close-modal');
 const modal = document.querySelector('#modal');
 
 openModal.addEventListener('click', () => modal.showModal());
+closeModal.addEventListener('click', () => modal.close());
