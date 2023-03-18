@@ -51,8 +51,14 @@ body {
 }
 
 .player-name-container {
-    grid-column: 2 / 3;
+    place-self: center;
+    grid-column: 1 / 4;
     font-size: 2.5rem;
+}
+
+.score {
+    place-self: center;
+    grid-area: 4 / 2 / 5 / 3;
 }
 
 #button-container {
@@ -89,6 +95,10 @@ body {
     border-radius: 3px;
     height: 1.45rem;
     font-size: 1rem;
+}
+
+#modal-container input[type=range] {
+    accent-color: hsl(180, 100%, 45%);
 }
 
 #modal-container > h2 {
