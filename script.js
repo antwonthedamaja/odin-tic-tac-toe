@@ -18,63 +18,59 @@ let firstRun = true;
 
 const displayController = {
     initialize: function() {
-        player1.score = 0;
-        player2.score = 0;
         player1.name = p1Name.value;
         player2.name = p2Name.value;
-        player1.color = `hsl(${p1Color.value}, 100%, 44%)`;
-        player2.color = `hsl(${p2Color.value}, 100%, 44%)`;
+        player1.color = `hsl(${p1Color.value}, 100%, 45%)`;
+        player2.color = `hsl(${p2Color.value}, 100%, 45%)`;
         player2.playerStatus = AIselect.checked;
         p1DomText.innerText = player1.name;
         p1DomText.style.color = player1.color;
         p2DomText.innerText = player2.name;
         p2DomText.style.color = player2.color;
-        boardController.clear();
         if (firstRun === false) {
+            game.turnCounter = 0;
+            player1.score = 0;
+            player2.score = 0;
+            boardController.clear();
             p1Container.lastElementChild.remove();
-            p2Container.lastElementChild.remove();
+            p2Container.lastElementChild.remove();;
         }
-        firstRun = false;
         p1Container.appendChild(score.cloneNode(true)); 
         p2Container.appendChild(score.cloneNode(true));
+        if (firstRun === true) {
+            game.startGame();
+        }
+        firstRun = false;
         modal.close();
-        game.startGame();
     },
     updateBoard: function() {
         tiles.forEach((tile, index) => {
             tile.innerText = boardController.board[index];
-        });
+            if (tile.innerText == "X") {
+                tile.style.color = `hsl(${p1Color.value}, 100%, 45%)`
+            } else {
+                tile.style.color = `hsl(${p2Color.value}, 100%, 45%)`
+            }
+        }); 
     }
 };
 
-p1Color.addEventListener('input', () => p1Color.style.accentColor = `hsl(${p1Color.value}, 100%, 44%)`);
-p2Color.addEventListener('input', () => p2Color.style.accentColor = `hsl(${p2Color.value}, 100%, 44%)`);
-playButton.addEventListener('click', () => displayController.initialize());
-
-//players
-function Player(name, color, playerStatus, marker) {
-    this.name = name;
-    this.color = color;
-    this.score = 0;
-    this.playerStatus = playerStatus;
-    this.marker = marker;
-}
-
-const player1 = new Player(undefined, undefined, undefined, 'X');
-const player2 = new Player(undefined, undefined, undefined, 'O');
+p1Color.addEventListener('input', () => p1Color.style.accentColor = `hsl(${p1Color.value}, 100%, 45%)`);
+p2Color.addEventListener('input', () => p2Color.style.accentColor = `hsl(${p2Color.value}, 100%, 45%)`);
+playButton.addEventListener('click', displayController.initialize);
 
 //main
 const boardController = {
-    board: ['', '', '',
-            '', '', '',
-            '', '', ''],
+    board: ['', '', '', '', '', '', '', '', ''],
     setTile: function(pos, setting) {
         this.board[pos] = `${setting}`;
-        displayController.updateBoard();
+        displayController.updateBoard()
+        game.turnCounter++;
     },
     clear: function() {
         this.board = ['', '', '', '', '', '', '', '', ''];
         displayController.updateBoard();
+        game.turnCounter = 0;
     }
 };
 
@@ -95,17 +91,30 @@ const game = {
             if (boardController.board[arr[0]] === boardController.board[arr[1]]
                 && boardController.board[arr[0]] === boardController.board[arr[2]]
                 && boardController.board[arr[0]] != '') {
-                    console.log('win!')};
+                    if (boardController.board[arr[0]] === 'X') {
+                        alert("Player 1 wins!")
+                        player1.score++;
+                        p1Container.lastChild.innerText = `Score: ${player1.score}`;
+                    } else {
+                        alert("Player 2 wins!")
+                        player2.score++;
+                        p2Container.lastChild.innerText = `Score: ${player1.score}`;
+                    }
+                    boardController.clear();
+            }
+        }
+        if (boardController.board.every(tile => tile != '')) {
+            alert("Tie game!");
+            boardController.clear();
         }
     },
     startGame: function() {
         tileButtons.forEach((tile, index) => {
             tile.addEventListener('click', () => {
                 if (tile.innerText == '') {
-                    boardController.setTile(index, this.deriveTurn());
+                    boardController.setTile(index, game.deriveTurn());
+                    game.checkForWin();
                 }
-                this.turnCounter++;
-                this.checkForWin();
             });
         });
     },
@@ -118,6 +127,18 @@ const game = {
         }
     }
 };
+
+//players
+function Player(name, color, playerStatus, marker) {
+    this.name = name;
+    this.color = color;
+    this.score = 0;
+    this.playerStatus = playerStatus;
+    this.marker = marker;
+}
+
+const player1 = new Player(undefined, undefined, undefined, 'X');
+const player2 = new Player(undefined, undefined, undefined, 'O');
 
 //modal
 const openModal = document.querySelector('#open-modal');
