@@ -1,5 +1,6 @@
 //DOM elements/manipulation
 const tiles = document.querySelectorAll('.tile');
+const tileButtons = document.querySelectorAll('.tile-container');
 const playButton = document.querySelector('#submit');
 const p1Name = document.querySelector('#p1-name-selection');
 const p2Name = document.querySelector('#p2-name-selection');
@@ -10,11 +11,10 @@ const p1Container = document.querySelector('#player1-container');
 const p2Container = document.querySelector('#player2-container');
 const p1DomText = document.querySelector('#p1-text');
 const p2DomText = document.querySelector('#p2-text');
-let counter = 0;
-
 const score = document.createElement('div');
 score.classList.add("score");
 score.innerText = 'Score: 0';
+let firstRun = true;
 
 const displayController = {
     initialize: function() {
@@ -22,22 +22,23 @@ const displayController = {
         player2.score = 0;
         player1.name = p1Name.value;
         player2.name = p2Name.value;
-        player1.color = `hsl(${p1Color.value}, 100%, 45%)`;
-        player2.color = `hsl(${p2Color.value}, 100%, 45%)`;
-        player2.AIstatus = AIselect.checked;
+        player1.color = `hsl(${p1Color.value}, 100%, 44%)`;
+        player2.color = `hsl(${p2Color.value}, 100%, 44%)`;
+        player2.playerStatus = AIselect.checked;
         p1DomText.innerText = player1.name;
         p1DomText.style.color = player1.color;
         p2DomText.innerText = player2.name;
         p2DomText.style.color = player2.color;
-        if (counter > 0) {
-            boardController.clear();
+        boardController.clear();
+        if (firstRun === false) {
             p1Container.lastElementChild.remove();
             p2Container.lastElementChild.remove();
         }
-        counter++;
+        firstRun = false;
         p1Container.appendChild(score.cloneNode(true)); 
         p2Container.appendChild(score.cloneNode(true));
         modal.close();
+        game.startGame();
     },
     updateBoard: function() {
         tiles.forEach((tile, index) => {
@@ -46,20 +47,21 @@ const displayController = {
     }
 };
 
-p1Color.addEventListener('input', () => p1Color.style.accentColor = `hsl(${p1Color.value}, 100%, 45%)`);
-p2Color.addEventListener('input', () => p2Color.style.accentColor = `hsl(${p2Color.value}, 100%, 45%)`);
+p1Color.addEventListener('input', () => p1Color.style.accentColor = `hsl(${p1Color.value}, 100%, 44%)`);
+p2Color.addEventListener('input', () => p2Color.style.accentColor = `hsl(${p2Color.value}, 100%, 44%)`);
 playButton.addEventListener('click', () => displayController.initialize());
 
 //players
-function Player(name, color) {
+function Player(name, color, playerStatus, marker) {
     this.name = name;
     this.color = color;
     this.score = 0;
-    this.AIstatus = false;
+    this.playerStatus = playerStatus;
+    this.marker = marker;
 }
 
-const player1 = new Player;
-const player2 = new Player;
+const player1 = new Player(undefined, undefined, undefined, 'X');
+const player2 = new Player(undefined, undefined, undefined, 'O');
 
 //main
 const boardController = {
@@ -68,6 +70,7 @@ const boardController = {
             '', '', ''],
     setTile: function(pos, setting) {
         this.board[pos] = `${setting}`;
+        displayController.updateBoard();
     },
     clear: function() {
         this.board = ['', '', '', '', '', '', '', '', ''];
@@ -88,10 +91,30 @@ const game = {
     ],
     checkForWin: function() {
         for (let i = 0; i < this.winConditions.length; i++) {
-            let arr = this.winConditions[i]; //arr = [0, 1, 2]
+            let arr = this.winConditions[i];
             if (boardController.board[arr[0]] === boardController.board[arr[1]]
                 && boardController.board[arr[0]] === boardController.board[arr[2]]
-                && boardController.board[arr[0]] != '') console.log('win!');
+                && boardController.board[arr[0]] != '') {
+                    console.log('win!')};
+        }
+    },
+    startGame: function() {
+        tileButtons.forEach((tile, index) => {
+            tile.addEventListener('click', () => {
+                if (tile.innerText == '') {
+                    boardController.setTile(index, this.deriveTurn());
+                }
+                this.turnCounter++;
+                this.checkForWin();
+            });
+        });
+    },
+    turnCounter: 0,
+    deriveTurn: function() {
+        if (this.turnCounter % 2 == 0) {
+            return player1.marker;
+        } else {
+            return player2.marker;
         }
     }
 };
